@@ -2,17 +2,26 @@
 // import morgan from "morgan";
 // import cors from "cors";
 const mongoose = require("mongoose");
+const express = require("express");
+// const app = require("app");
 
 // import contactsRouter from "./routes/contactsRouter.js";
 
-// const app = express();
+const app = express();
 
 const DB_Host =
   "mongodb+srv://Haitjet:w4NGVdpKuYh39Usl@cluster0.hi9qo5h.mongodb.net/books_reader?retryWrites=true&w=majority";
 mongoose
   .connect(DB_Host)
-  .then(() => console.log("Database connect sucess"))
-  .catch((error) => console.log(error.message));
+  .then(() =>
+    app.listen(3000, () => {
+      console.log("Server is running. Use our API on port: 3000");
+    })
+  )
+  .catch((error) => {
+    console.log(error.message);
+    process.exit(1);
+  });
 
 // app.use(morgan("tiny"));
 // app.use(cors());
