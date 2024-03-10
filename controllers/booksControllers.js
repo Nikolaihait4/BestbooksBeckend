@@ -1,6 +1,6 @@
 const books = require("../db/books");
 
-const {HttpError} = require("../helpers/HttpError");
+const { HttpError, ctrlWrapper } = require("../helpers");
 
 const getAll = async (req, res) => {
   const result = await books.listBooks();
@@ -39,10 +39,25 @@ const deleteById = async (req, res) => {
   res.status(200).json({ message: "Book deleted" });
 };
 
+const updeteFav = async (req, res) => {
+  const { id } = req.params;
+  const { favorite } = req.body;
+  const result = await books.findByIdAndUpdate(
+    id,
+    { favorite: JSON.parse(favorite) },
+    { new: true }
+  );
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.status(200).json(result);
+};
+
 module.exports = {
-  getAll,
-  getById,
-  add,
-  updeteById,
-  deleteById,
+  getAll: ctrlWrapper(getAll),
+  getById: ctrlWrapper(getById),
+  add: ctrlWrapper(add),
+  updeteById: ctrlWrapper(updeteById),
+  updeteFav: ctrlWrapper(updeteFav),
+  deleteById: ctrlWrapper(deleteById),
 };
