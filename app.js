@@ -1,43 +1,28 @@
-// import express from "express";
-// import morgan from "morgan";
-// import cors from "cors";
-const mongoose = require("mongoose");
-const express = require("express");
-// const app = require("app");
+// require("dotenv").config();
 
-// import contactsRouter from "./routes/contactsRouter.js";
+const express = require("express");
+const logger = require("morgan");
+// const cors = require("cors");
+
+const booksRouter = require("./routes/api/books");
 
 const app = express();
 
-const DB_Host =
-  "mongodb+srv://Haitjet:w4NGVdpKuYh39Usl@cluster0.hi9qo5h.mongodb.net/books_reader?retryWrites=true&w=majority";
-mongoose
-  .connect(DB_Host)
-  .then(() =>
-    app.listen(3000, () => {
-      console.log("Server is running. Use our API on port: 3000");
-    })
-  )
-  .catch((error) => {
-    console.log(error.message);
-    process.exit(1);
-  });
+// const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-// app.use(morgan("tiny"));
+// app.use(logger(formatsLogger));
 // app.use(cors());
-// app.use(express.json());
+app.use(express.json());
 
-// app.use("/api/contacts", contactsRouter);
+app.use("/api/books", booksRouter);
 
-// app.use((_, res) => {
-//   res.status(404).json({ message: "Route not found" });
-// });
+app.use((req, res) => {
+  res.status(404).json({ message: "Not found" });
+});
 
-// app.use((err, req, res, next) => {
-//   const { status = 500, message = "Server error" } = err;
-//   res.status(status).json({ message });
-// });
+app.use((err, req, res, next) => {
+  const { status = 500, message = "Server error" } = err;
+  res.status(status).json({ message });
+});
 
-// app.listen(3000, () => {
-//   console.log("Server is running. Use our API on port: 3000");
-// });
+module.exports = app;
