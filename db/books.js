@@ -1,6 +1,7 @@
 const fs = require("fs/promises");
 const path = require("path");
-const { nanoid } = require("nanoid");
+// const { nanoid } = require("nanoid");
+const { uuid } = require("uuidv4");
 const booksPath = path.resolve("db", "booksBasa.json");
 
 const listBooks = async () => {
@@ -28,7 +29,7 @@ const removeBook = async (bookId) => {
 const addBook = async (body) => {
   const { title, author, year, imageUrl, rating } = body;
   const allBooks = await listBooks();
-  const newBook = { id: nanoid(), title, author, year, imageUrl, rating };
+  const newBook = { id: uuid(), title, author, year, imageUrl, rating };
   allBooks.push(newBook);
   await fs.writeFile(booksPath, JSON.stringify(allBooks, null, 2));
   return newBook;

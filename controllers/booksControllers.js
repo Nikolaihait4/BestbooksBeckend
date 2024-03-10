@@ -1,6 +1,6 @@
 const books = require("../db/books");
 
-const { HttpError } = require("../helpers");
+const {HttpError} = require("../helpers/HttpError");
 
 const getAll = async (req, res) => {
   const result = await books.listBooks();
