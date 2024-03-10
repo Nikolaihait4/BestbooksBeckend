@@ -3,6 +3,11 @@ const app = require("./app");
 
 const { DB_HOST, PORT = 3000 } = process.env;
 
+if (!DB_HOST) {
+  console.error("DB_HOST environment variable is not defined.");
+  process.exit(1);
+}
+
 mongoose
   .connect(DB_HOST)
   .then(() => {
